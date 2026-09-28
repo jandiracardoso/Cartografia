@@ -2,7 +2,7 @@
 rm(list = ls())
 
 # ==============================================================================
-# TRABALHO FINAL: APLICAÇÃO SHINY INTERATIVA (MALÁRIA X DESMATAMENTO 2020-2024)
+# TRABALHO FINAL: MALÁRIA X DESMATAMENTO 2020-2024
 # ==============================================================================
 
 library(sf)
@@ -15,12 +15,11 @@ library(foreign)
 library(geobr)
 library(dplyr)
 
-pasta <- "C:/Users/jandy/OneDrive/Documentos/Doutorado/Fiocruz/Disciplinas/Cartografia/Trab Final"
+pasta <- "/Cartografia/Trab Final"
 
 # ------------------------------------------------------------------------------
 # 1. LEITURA E CONSOLIDAÇÃO DOS DADOS (2020 A 2024)
 # ------------------------------------------------------------------------------
-
 # 1.1 Leitura do Shapefile do IBGE e dados do DETER
 ibge_amz <- st_read(file.path(pasta, "municipalities_legal_amazon.shp"))
 deter    <- read.dbf(file.path(pasta, "deter-amz-deter-public.dbf"))
@@ -43,7 +42,6 @@ sivep <- bind_rows(lista_malaria)
 # ------------------------------------------------------------------------------
 # 2. GERAR E SALVAR A PLANILHA CONSOLIDADA (CSV)
 # ------------------------------------------------------------------------------
-
 sivep_resumo <- sivep %>%
   mutate(ano = lubridate::year(DT_NOTIF)) %>% 
   group_by(MUN_NOTI, ano) %>%
@@ -123,7 +121,6 @@ bbox_amz <- st_bbox(dados_shiny)
 # ------------------------------------------------------------------------------
 # 4. INTERFACE DO USUÁRIO (UI)
 # ------------------------------------------------------------------------------
-
 ui <- fluidPage(
   titlePanel("Monitoramento de Malária e Desmatamento - Amazônia Legal (2020-2024)"),
   
@@ -164,7 +161,6 @@ ui <- fluidPage(
 # ------------------------------------------------------------------------------
 # 5. SERVIDOR (SERVER)
 # ------------------------------------------------------------------------------
-
 server <- function(input, output, session) {
   
   output$mapa_interativo <- renderLeaflet({
